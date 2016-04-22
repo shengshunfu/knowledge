@@ -119,3 +119,14 @@ volumes:
 其中，比较值得注意的是数据和应用都隔离开了，如ES中存放着整个项目的演示数据是以volumes的形式挂载在ES的容器外部，即es_data映射到ES容器的/usr/share/elasticsearch/data目录，而es_data则是映射root@default:/var/lib/docker/volumes/mdap_es_data。
 
 docker-machine 有直接的scp命令可直接将本地的数据copy至docker-machine中。
+
+
+### Notes
+
+#### 时区
+
+大部分镜像的默认时区都是UTC, 这时因为docker官方提供的镜像也是这么做的, 所以一些对时间比较敏感的代码可能会出现错误.
+
+解决方法一: 设置环境变量`TZ`, 例如: `docker run --rm -e TZ=Asia/Shanghai ubuntu date`
+
+解决方法二: 在`Dockerfile`中添加`RUN echo "Asia/Shanghai" > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata`
