@@ -1,0 +1,30 @@
+1.对于scrapy的个人理解：scrapy中内置了一个简单的爬虫实现Spider，而开发者要做的是重写一些内置方法或者重新定义一些内置参数，爬取规则同样包含于此，通过这些改动来壮大Spider的功能并让它符合我们的爬取要求。
+
+
+2.在scrapy中，一支较为完善的爬虫包括四个内容：Project(新建的爬虫项目，里面包含基本框架以及一些项目配置)，Items(自定义抓取的目标)，power-Spider(改造而成的Spider)，Pipeline(管道，用于存储爬取内容)
+
+
+3.scrapy常用命令及参数详解：
+##启动命令crawl dmoz用于爬取dmoz.org的内容
+scrapy crawl dmoz
+
+##获取response回应
+scrapy shell http://www.dmoz.org/Computers/Programming/Languages/Python/Books/
+
+##Selectors（选择器：筛子）的四种基础方法：
+xpath()：返回一系列的selectors，每一个select表示一个xpath参数表达式选择的节点
+css()：返回一系列的selectors，每一个select表示一个css参数表达式选择的节点
+extract()：返回一个unicode字符串，为选中的数据，即去掉多余头衔
+re()：返回一串一个unicode字符串，为使用正则表达式抓取出来的内容，此方法默认在前面使用extract方法处理过
+
+
+##xpath路径常用表达式：
+nodename	选取此节点的所有子节点
+/		从根节点选取
+//		从匹配选择的当前节点选择文档中的节点，而不考虑他们的位置
+.		选取当前节点
+..		选取当前节点的父节点
+@		选取属性
+
+##运行scrapy程序并导出为json格式，-o后面是导出文件名，-t后面是导出类型
+scrapy crawl dmoz -o items.jsom -t json

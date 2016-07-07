@@ -1,0 +1,40 @@
+1.HEAD指向当前分支，它在众多commit版本间移动，从而得到不同的推送版本。
+
+
+2.暂存区和本地分支之间存在一个映射关系库。
+
+
+3.对知识库中git章节作相关的常用命令补充：
+
+## 同步远程库到本地
+git fetch origin
+git reset --hard origin/
+
+## 删除远程库中的文件
+git rm --cache filename
+git commit -m "some infomation"
+git push origin master
+
+## 查看工作区和暂存区中的内容信息
+git status
+
+## 查看有多少条本地分支以及当前位于哪一条分支
+git branch
+
+## 查看commit的历史版本
+git log
+
+## 删除暂存区中的文件
+git rm --cache filename
+
+## 同时删除暂存区和工作区中的文件
+git rm -f filename
+
+## 推送本地master分支到远程master分支
+git push origin master:master
+
+## 在暂存区中执行，放弃工作区的改动
+git checkout -- filename
+
+
+4.注意：要保证本地库和远程库内容同步，在本地建立一个新库后第一件事情是同步远程库中的内容到本地，而且在本地库中如果要删除同步到远程库中的文件要使用git rm这个删除命令删除，然后一步一步提交到远程库，这样在远程库中对应相同的文件也会被删除，实现同步；如果将要操作的文件没有提交到远程库过，那么可以用普通的bash命令处理它。
