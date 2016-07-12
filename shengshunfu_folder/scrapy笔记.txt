@@ -1,0 +1,58 @@
+1.对于scrapy的个人理解：scrapy中内置了一个简单的爬虫实现Spider，而开发者要做的是重写一些内置方法或者重新定义一些内置参数，爬取规则同样包含于此，通过这些改动来壮大Spider的功能并让它符合我们的爬取要求。
+
+
+2.在scrapy中，一支较为完善的爬虫包括四个内容：Project(新建的爬虫项目，里面包含基本框架以及一些项目配置)，Items(自定义抓取的目标)，power-Spider(改造而成的Spider)，Pipeline(管道，用于存储爬取内容)
+
+
+3.scrapy常用命令及参数详解：
+##启动命令crawl dmoz用于爬取dmoz.org的内容
+scrapy crawl dmoz
+
+##无参数命令，列出一些使用帮助以及可用的命令
+scrapy
+
+##创建一个scrapy项目
+scrapy startproject myproject
+
+##使用Scrapy下载器(downloader)下载给定的url，并将获取到的内容标准输出到屏幕
+scrapy fetch <url>
+
+##在浏览器中打开给定的url，并以spider获取到的形式展现，以用来检查spider所获取到的页面是否是我们所希望的样子
+scrapy view <url>
+
+##在未创建项目的情况下，运行一个编写在python文件中的spider
+scrapy runspider myspider.py
+
+##输出scrapy版本，配合-v参数运行时，该命令同时输出python，twisted以及平台的版本信息
+scrapy version [-v]
+
+##用给定的url启动scrapy shell，用于对此网页的一些操作
+scrapy shell <url>
+
+##Selectors（选择器：筛子）的四种基础方法：
+xpath()：返回一系列的selectors，每一个select表示一个xpath参数表达式选择的节点
+css()：返回一系列的selectors，每一个select表示一个css参数表达式选择的节点
+extract()：返回一个unicode字符串，为选中的数据，即去掉多余头衔
+re()：返回一串一个unicode字符串，为使用正则表达式抓取出来的内容，此方法默认在前面使用extract方法处理过
+
+
+##xpath路径常用表达式：
+nodename	选取此节点的所有子节点
+/		从根节点选取
+//		从匹配选择的当前节点选择文档中的节点，而不考虑他们的位置
+.		选取当前节点
+..		选取当前节点的父节点
+@		选取属性
+
+##运行scrapy程序并导出为json格式，-o后面是导出文件名，-t后面是导出类型
+scrapy crawl dmoz -o items.jsom -t json
+
+
+scrapy的工作流程：首先引擎从spider中获取第一个要爬取的url并送往调度器(scheduler)，接着引擎向调度器请求下一个要爬取的url发给下载器(downloader)，下载器下载该url指向的网页，并把返回的response交给spider解析，spiders包含特定的解析规则，解析出来的数据有两部分，一部分是需要保存的items数据，将会送到Item Pipeline存储或做后续处理，另一部分是需要进一步抓取的url链接，将会被送回调度器(scheduler)。这个过程的每一步request和reponse内容都要流经引擎。
+
+rules和link_extractor是CrawSpider类特有的属性，前者定义了爬取的url规则以及是否跟进从而实现自动化，后者定义了如何从爬取到的页面提取链接。
+
+start_requests()方法：生成初始请求，当没有指定的url可以爬取，也可以从这里获取request，一般来讲此方法会通过make_request_from_url()方法将start_urls中的每一个url制作成一个request请求，而这里所说的request不仅仅是get请求，也可以是post请求。
+
+
+使用crawlSpider的时候应注意callback中不要使用parse作为回调函数，也不要重写这个方法，因为parse在它的内部要用到。
