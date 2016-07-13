@@ -4,10 +4,13 @@
 2.很多系统的global全局命令都放在/usr/local/bin/，当然不包括系统的内置命令，系统的内置命令一般放在/usr/bin/中
 
 
-3.virtualenv与编辑器的结合：在pycharm中创建一个项目的时候指定你虚拟环境中的python编译器，有点像这个样子path/to/even/bin/python2.7，然后它就会自动将这个虚拟环境中的所有第三方库都关联进来，这样一来就实现了脱离系统环境而去使用虚拟环境中的python编译器和库文件，将系统环境和开发环境区分开来。
+3.一般建完virtualenv虚拟环境之后不能随意移动它的位置以及修改它的名字，可以用virtualenv —relocatable命令将even修改为可更改位置的虚拟环境，本质上是将even中bin目录中的一些命令改成相对路径可执行状态relative，但有一个问题，它不能把python版本改成可移动状态，即没有更改bin目录中的python命令，只因此当移动过后使用进入该虚拟环境使用python —-version看到的是外面系统的当前python版本。
 
 
-4.virtualenv常用命令：
+4.virtualenv与编辑器的结合：在pycharm中创建一个项目的时候指定你虚拟环境中的python编译器，有点像这个样子path/to/even/bin/python2.7，然后它就会自动将这个虚拟环境中的所有第三方库都关联进来，这样一来就实现了脱离系统环境而去使用虚拟环境中的python编译器和库文件，将系统环境和开发环境区分开来。
+
+
+5.virtualenv常用命令：
 ##用指定的python编译器去创建一个虚拟环境，生成venv目录
 virtualenv -p /usr/bin/python2.7 venv
 
@@ -24,4 +27,4 @@ rm -rf venv
 pip freeze > requirements.txt
 
 
-5.pyenv原理：它和virtualenv有很多类似的地方，也可以隔离环境，pyenv是一个python版本管理工具，通过pyenv versions命令可以查看当前安装的所有python版本以及目前在使用哪一个版本，这一点可以到家目录下的.pyenv/versions目录中查看，每一个版本占据一个文件夹，每一个文件夹都有各自的python编译器和独立的第三方库，这些文件夹很像virtualevn中的虚拟环境，只不过它不必启动activate脚本来激活这个虚拟环境，只要你使用pyenv global命令指定使用哪一个python版本后它会自动将对应文件夹中的内置命令替换掉你的一部分系统环境变量，这样一来你使用诸如pip install命令下载下来的第三方库会自动存到对应文件夹中的site-package里面，从而将不同版本的python环境隔离开来。
+6.pyenv原理：它和virtualenv有很多类似的地方，也可以隔离环境，pyenv是一个python版本管理工具，通过pyenv versions命令可以查看当前安装的所有python版本以及目前在使用哪一个版本，这一点可以到家目录下的.pyenv/versions目录中查看，每一个版本占据一个文件夹，每一个文件夹都有各自的python编译器和独立的第三方库，这些文件夹很像virtualevn中的虚拟环境，只不过它不必启动activate脚本来激活这个虚拟环境，只要你使用pyenv global命令指定使用哪一个python版本后它会自动将对应文件夹中的内置命令替换掉你的一部分系统环境变量，这样一来你使用诸如pip install命令下载下来的第三方库会自动存到对应文件夹中的site-package里面，从而将不同版本的python环境隔离开来。
